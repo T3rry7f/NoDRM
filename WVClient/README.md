@@ -12,11 +12,5 @@ Python 2.7`
 
 ![Kapture 2021-08-01 at 21.20.53](1.gif)
 
-## References
 
-https://github.com/cryptonek/widevine-l3-decryptor
-
-https://github.com/Satsuoni/widevine-l3-guesser
-
-https://chromium.googlesource.com/chromium/
 
