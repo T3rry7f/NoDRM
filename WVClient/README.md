@@ -4,7 +4,7 @@ Widevine Content KEY Extractor in Python
 
 ## Environment
 
-Windows 7/8/10 (WidevineProx.exey)   
+Windows 7/8/10 (WidevineProx.exe)   
 
 
 CDM version :4.10.2209.0   
