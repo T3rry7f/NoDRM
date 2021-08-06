@@ -1,0 +1,11 @@
+{
+"PSSH_CONTAINER":"mpd",
+
+"LICENSE_PROXY_SERVER":"10.211.55.4:8888",
+
+"LICENSE_SERVER":"http://widevine-proxy.appspot.com/proxy",
+
+"HEADERS":"",
+
+"COOKIES":""
+}
