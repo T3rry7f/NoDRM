@@ -37,7 +37,6 @@ class WidevineCDM:
         self.pssh_type=None
         self.loadConfig()
 
-
     def loadConfig(self):
         if(os.path.exists(CONFIG_FILE)):
             config=json.loads(open(CONFIG_FILE).read())
@@ -46,7 +45,9 @@ class WidevineCDM:
             self.license_proxy_address=tuple([ipaddress[0],int(ipaddress[1])])
             self.license_url=config['LICENSE_SERVER']
             self.header['Cookie']=config['COOKIES']
-
+        else:
+            print("wvConfig.json is missing")
+            return
 
     def generateRequestData(self,url): # 
         
@@ -123,7 +124,7 @@ class WidevineCDM:
             if(keyId):
                 cryptos = AES.new(decryptKey, mode, keyIv)
                 dkey = cryptos.decrypt(keyData)
-                print("KID:",keyId,"KEY:",dkey.encode('hex'))
+                print "KID:",keyId,"KEY:",dkey.encode('hex')
 
 
 
@@ -132,8 +133,7 @@ if __name__ == '__main__':
     if len(sys.argv)>1:
         url=sys.argv[1]
 
-        cdm=WidevineCDM(LICENSE_PROXY_SERVER) #
-        #data=cdm.generateRequestData(url) #https://bitmovin-a.akamaihd.net/content/art-of-motion_drm/video/1080_4800000/cenc_dash/init.mp4
+        cdm=WidevineCDM(LICENSE_PROXY_SERVER) 
         data=cdm.generateRequestData(url) #https://bitmovin-a.akamaihd.net/content/art-of-motion_drm/mpds/11331.mpd
         cdm.getContentKey(data)
     else:
