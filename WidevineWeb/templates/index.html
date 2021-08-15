@@ -217,6 +217,8 @@ function get_pssh_from_mpd() {
 
     let pssh = document.getElementById('pssh_type').value
 
+    console.log(pssh);
+
     socket.emit('get_pssh_event', { data: mpd_links, pssh_type: pssh });
 
 }
@@ -258,7 +260,7 @@ function getKey() {
 
 <body>
 <div align="center">
-    <label align="center" id="pssh_type">MPD links: </label>
+    <label align="center" >MPD links: </label>
     <textarea id="mpdlinks" style="margin: 0px; width: 1024px; height: 196px;"> </textarea><br>
 </div>
 <div align="center">
@@ -273,7 +275,8 @@ function getKey() {
 </div>
 <br>
 <div align="center">
-    <input type="button" class="btn btn-primary" name="abc" value="Run" onclick="getKey()">
+      <input type="button" id="pssh_type" value="mpd" hidden>
+    <input type="button" class="btn btn-primary"  name="abc" value="Run" onclick="getKey()">
 </div>
 <br>
 <div  align="center">

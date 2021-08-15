@@ -84,10 +84,8 @@ class WidevineCDM:
         if(self.pssh_type=='mpd'): # parse mpd file 
             try:
 
-                matchObj = re.findall( rb'pssh.+<', data, re.M|re.I)
-                
+                matchObj = re.findall(r'pssh.+<', data.decode('utf-8'), re.M|re.I)
                 pssh_data= matchObj[0].split('>')[1].split('<')[0]
-                #print(pssh_data)
                 self.pssh_data=base64.b64decode(pssh_data)
             except Exception as e:
                print(e)
@@ -228,6 +226,7 @@ class WidevineCDM:
 
         if(self.pssh_type=='mpd'):
             resp=requests.get(url,headers=self.header)
+            #print(resp.content)
             return  resp.content        
 
         elif(self.pssh_type=='mp4'):
