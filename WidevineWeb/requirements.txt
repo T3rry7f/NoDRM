@@ -1,0 +1,5 @@
+Flask==2.0.1
+requests==2.26.0
+Flask_SocketIO==5.1.1
+protobuf==3.17.3
+pycryptodome==3.10.1
