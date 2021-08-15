@@ -1,18 +1,15 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>NoDRM</title>
     <div  align="right">
      Author: <a href="https://github.com/T3rry7f/NoDRM">@T3rry</a>
-
      </div>
     <div  align="center">
     <h1>NoDRM</h1>
   
   </div>
  
-
 <style type="text/css">
 input,
 textarea {
@@ -26,7 +23,6 @@ textarea {
     color: rgb(18, 96, 101);
     font-size: 2.5em;
 }
-
 #text-box {
     position:fixed;
     top: 50%;
@@ -37,24 +33,17 @@ textarea {
     margin-left: -15em; /*set to a negative number 1/2 of your width*/
 }
 
-
 </style>
-
 </head>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js" integrity="sha512-aMGMvNYu8Ue4G+fHa359jcPb1u+ytAF+P2SCb+PxrjCdO3n3ZTxJ30zuH39rimUggmTwmh2u7wvQsDTHESnmfQ==" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://unpkg.com/popper.js@1.12.3"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-
 <script type="text/javascript" charset="utf-8">
-
 var socket = io();
-
 mediaKeys = null;
-
 HAS_SETTSERVERIFICATE = false
-
 config = [{
     "initDataTypes": ["cenc"],
     "audioCapabilities": [{
@@ -65,89 +54,59 @@ config = [{
     }]
 }];
 
-
-
 $(document).ready(function() {
-
     $('input[type=radio][name=pssh]').click(function() {
         if (this.value == 'mpd') {
-            document.getElementById('pssh_type').innerHTML = 'Mpd links'
+            document.getElementById('label_pssh').innerHTML = 'MPD links'
             document.getElementById('pssh_type').value = 'mpd'
         } else if (this.value == 'mp4') {
-            document.getElementById('pssh_type').innerHTML = 'Mp4 links'
+            document.getElementById('label_pssh').innerHTML = 'MP4 links'
             document.getElementById('pssh_type').value = 'mp4'
         } else if (this.value == 'base64') {
-            document.getElementById('pssh_type').innerHTML = 'Base64 links'
+            document.getElementById('label_pssh').innerHTML = 'Base64 PSSH'
             document.getElementById('pssh_type').value = 'base64'
         }
     });
-
     socket.on('server_response', function(msg, cb) {
         console.log(msg.data)
     });
-
     socket.on('set_serverificate_event', function(msg, cb) {
-
         console.log(msg.data)
         SetServerCertificate(msg.data);
         if (!HAS_SETTSERVERIFICATE) {
-
             HAS_SETTSERVERIFICATE = true
         }
         get_pssh_from_mpd();
     });
-
     socket.on('generate_lic_request_event', function(msg, cb) {
-
         console.log(msg.data)
         CreateSessionAndGenerateRequest(msg.data);
     });
-
     socket.on('decrypt_sessionkey_event', function(msg, cb) {
-
         console.log("decrypt_sessionkey_event")
         getSessionKey(msg.data)
 
-
     });
-
     socket.on('get_contentkey_event', function(msg, cb) {
-
         console.log("get_contentkey_event:")
-
         $('#log').append('<br>' + $('<div/>').text(msg.data).html());
         console.log(msg.data)
 
-
     });
-
-
-
-
 
     socket.on('connect', function() {
         socket.emit('init_event', { data: 'I\'m connected!' });
     });
-
-
-
 });
 
-
-
-
 Module = {};
-
 function Uint8ArrayToString(fileData) {
     var dataString = "";
     for (var i = 0; i < fileData.length; i++) {
         dataString += String.fromCharCode(fileData[i]);
     }
-
     return dataString
-
 }
-
 function str2ab(str) {
     var buf = new ArrayBuffer(str.length * 2);
     var bufView = new Uint16Array(buf);
@@ -156,19 +115,13 @@ function str2ab(str) {
     }
     return buf;
 }
-
 function ab2str(buf) {
     return String.fromCharCode.apply(null, new Uint16Array(buf));
 }
-
 Module.onRuntimeInitialized = function() {
-
 }
 
-
-
 function CreateSessionAndGenerateRequest(pssh) {
-
 
     var mediaKeySession = mediaKeys.createSession("temporary");
     mediaKeySession.generateRequest("cenc", pssh);
@@ -177,90 +130,57 @@ function CreateSessionAndGenerateRequest(pssh) {
             // We got a license request, now send it to a license server...
             console.log("CreateSessionAndGenerateRequest");
             console.log(message.message);
-
             licenseResponseBlob = new Uint8Array()
-
             socket.emit('get_license_event', { data: message.message });
         }
     });
 
-
 }
 
-
 async function SetServerCertificate(cert) {
-
     //mediaKeySession.update(cert);
     console.log("SetServerCertificate");
     mediaKeys.setServerCertificate(cert);
-
 }
-
 async function InitializeCDM() {
-
     var keySystemAccess = await navigator.requestMediaKeySystemAccess("com.widevine.alpha", config);
-
     mediaKeys = await keySystemAccess.createMediaKeys();
 
-
     console.log(mediaKeys);
-
 }
-
-
 
 function get_pssh_from_mpd() {
-
     mpd_links = document.getElementById("mpdlinks").value;
-
     console.log(mpd_links);
-
     let pssh = document.getElementById('pssh_type').value
-
     console.log(pssh);
-
     socket.emit('get_pssh_event', { data: mpd_links, pssh_type: pssh });
-
 }
 
-
 function getSessionKey(en_session_key) {
-    // SetServerCertificate(CertificateBlob)
-    // CreateSessionAndGenerateRequest(psshBox)
     var u_session_key = new Uint8Array(en_session_key);
-    // console.log(enc_session_key)
-    // console.log(u_session_key)
     var a = Module.cwrap('tryUsingDecoder', 'string', ['string']);
     var session_key = a(Uint8ArrayToString(u_session_key))
     console.log("session_key")
-
     console.log(session_key)
-
     socket.emit('get_contentkey_event', { data: session_key });
     return session_key
-
 }
-
-
 
 function getKey() {
     InitializeCDM();
-
     var lic_url = document.getElementById("license_url").value
     console.log(lic_url)
     if (lic_url) {
-
         socket.emit('set_license_url_event', { data: lic_url });
     }
-
 
 }
 </script>
 <script src="../static/wasm_gsr.js"></script>
-
 <body>
 <div align="center">
-    <label align="center" >MPD links: </label>
+    <label align="center" id="label_pssh"  >MPD links: </label>
     <textarea id="mpdlinks" style="margin: 0px; width: 1024px; height: 196px;"> </textarea><br>
 </div>
 <div align="center">
