@@ -52,7 +52,7 @@ class WidevineCDM:
             self.license_url=config['LICENSE_SERVER']
             self.header=config['HEADER']
 
-            self.sock.connect(self.license_proxy_address)
+            #self.sock.connect(self.license_proxy_address)
         else:
             print("wvConfig.json is missing")
             return
