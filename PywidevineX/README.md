@@ -6,9 +6,10 @@ For Chromecdm 2209 private key is not necessary, directly using the rsa whitebox
 
 ## Environment
 
-Python3.6 above
+Python3
 
-Ubuntu or MacOS  (cdmapi library required)
+Ubuntu/MacOS/Windows (cdmapi library required)
+ 
 
 
 
